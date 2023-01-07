@@ -16,26 +16,25 @@ exports.bestTours = (req, res, next) => {
 }
 
 
-exports.getTours = catchAsync(
+exports.getTours = catchAsync(async (req, res, next) => {
+    const features = new apiFeatures(Tour.find(), req.query)
+        .filter()
+        .sort()
+        .fields()
+        .pagenation();
+    const tours = await features.query;
 
+    // SEND RESPONSE
+    res.status(200).json({
+        status: 'success',
+        results: tours.length,
+        data: {
+            tours
+        }
+    });
+});
 
-    async (req, res) => {
-
-        const features = new apiFeatures(Tour.find(), req.query).filter().sort().fields().pagenation();
-        const tours = await features.query
-        res.status(200).json(
-            {
-                status: 'sucess',
-                mssg: 'yes we are using express',
-                data: {
-                    tours
-                }
-            }
-        )
-    }
-)
-
-exports.createTour = catchAsync(async (req, res) => {
+exports.createTour = catchAsync(async (req, res, next) => {
 
 
     const newTour = await Tour.create(req.body)
@@ -46,7 +45,7 @@ exports.createTour = catchAsync(async (req, res) => {
 }
 
 )
-exports.getTour = catchAsync(async (req, res) => {
+exports.getTour = catchAsync(async (req, res, next) => {
 
 
 
@@ -57,7 +56,7 @@ exports.getTour = catchAsync(async (req, res) => {
         return next(new appError('oops tour not found ', 404))
     }
 
-    res.status(201).json({
+    res.status(200).json({
         mssg: 'Here we are sending you the perfect response',
         time: req.requestTime,
         data: {
@@ -71,7 +70,7 @@ exports.getTour = catchAsync(async (req, res) => {
 })
 exports.assignTour = catchAsync(
 
-    (req, res) => {
+    (req, res, next) => {
 
 
         res.status(201).json({
@@ -83,7 +82,7 @@ exports.assignTour = catchAsync(
 )
 exports.updateTour = catchAsync(
 
-    async (req, res) => {
+    async (req, res, next) => {
 
 
         const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
@@ -109,7 +108,7 @@ exports.updateTour = catchAsync(
 
 exports.deleteTour = catchAsync(
 
-    async (req, res) => {
+    async (req, res, next) => {
 
         await Tour.findByIdAndDelete(req.params.id)
 
@@ -122,7 +121,7 @@ exports.deleteTour = catchAsync(
 
 )
 
-exports.getToursStats = catchAsync(async (req, res) => {
+exports.getToursStats = catchAsync(async (req, res, next) => {
     const stats = await Tour.aggregate([
         {
             $match: { ratingsAverage: { $gte: 1 } }

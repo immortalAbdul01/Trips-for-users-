@@ -152,6 +152,14 @@ tourSchema.pre(/^find/, function (next) {
     next()
 
 })
+
+// tourSchema.pre(/^find/, function (next) {
+//     this.populate({
+//         path: 'guides'
+//     })
+//     next()
+
+// })
 tourSchema.pre('save', async function (next) {
     const guidePromises = this.guides.map(async id => await UpdatedUsers.findById(id))
     this.guides = await Promise.all(guidePromises)
