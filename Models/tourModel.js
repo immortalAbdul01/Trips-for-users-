@@ -165,6 +165,12 @@ tourSchema.pre('save', async function (next) {
     this.guides = await Promise.all(guidePromises)
     next()
 })
+// Virtual populate 
+tourSchema.virtual('reviews', {
+    ref: 'Review',
+    foreignField: 'tour',
+    localField: '_id'
+})
 tourSchema.post(/^find/, function (doc, next) {
     console.log(`It took approx clear${Date.now() - this.start} ms`);
     console.log(doc);
