@@ -3,6 +3,7 @@ const express = require('express')
 const morgan = require('morgan')
 const rateLimit = require('express-rate-limit')
 const helmet = require('helmet')
+const reviewRouter = require('./Routes/reviewRoutes')
 const hpp = require('hpp')
 const mongoSanitize = require('express-mongo-sanitize')
 const xss_clean = require('xss-clean')
@@ -75,6 +76,7 @@ app.use('/app', limiter)
 
 app.use('/app/v1/tours', tourRouter)
 app.use('/app/v1/users', userRouter)
+app.use('/app/v1/review', reviewRouter)
 
 app.all('*', (req, res, next) => {
     // res.status(404).json({
