@@ -1,7 +1,6 @@
 const Tour = require('./../Models/tourModel')
 // const fs = require("fs")
 
-const apiFeatures = require('./../utils/appFeature')
 const catchAsync = require('./../utils/catchAsync')
 const appError = require('./../utils/app.Error')
 const factory = require('./../controllers/handlerFacory')
@@ -17,58 +16,12 @@ exports.bestTours = (req, res, next) => {
 }
 
 
-exports.getTours = catchAsync(async (req, res, next) => {
-    const features = new apiFeatures(Tour.find(), req.query)
-        .filter()
-        .sort()
-        .fields()
-        .pagenation();
-    const tours = await features.query;
+exports.getTours = factory.getAll(Tour)
+exports.createTour = factory.createOne(Tour)
+exports.getTour = factory.getOne(Tour, { path: 'reviews' })
+exports.updateTour = factory.updateOne(Tour)
 
-    // SEND RESPONSE
-    res.status(200).json({
-        status: 'success',
-        results: tours.length,
-        data: {
-            tours
-        }
-    });
-});
-
-exports.createTour = catchAsync(async (req, res, next) => {
-
-
-    const newTour = await Tour.create(req.body)
-    res.status(200).json({
-        mssg: "sucessfully created",
-        data: newTour
-    })
-}
-
-)
-exports.getTour = catchAsync(async (req, res, next) => {
-
-
-
-
-    const tour = await Tour.findById(req.params.id).populate('reviews')
-
-    if (!tour) {
-        return next(new appError('oops tour not found ', 404))
-    }
-
-    res.status(200).json({
-        mssg: 'Here we are sending you the perfect response',
-        time: req.requestTime,
-        data: {
-            newTour: tour
-        }
-
-    }
-    )
-
-
-})
+exports.deleteTour = factory.deleteOne(Tour)
 exports.assignTour = catchAsync(
 
     (req, res, next) => {
@@ -81,33 +34,6 @@ exports.assignTour = catchAsync(
 
     }
 )
-exports.updateTour = catchAsync(
-
-    async (req, res, next) => {
-
-
-        const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-
-        })
-
-        if (!tour) {
-            return next(new appError('Oops tour not found ', 404))
-        }
-
-        res.status(200).json({
-            mssg: 'hii there we are using patch method ',
-            data: {
-                tour
-            }
-        })
-
-
-    }
-
-)
-
-exports.deleteTour = factory.deleteOne(Tour)
 exports.getToursStats = catchAsync(async (req, res, next) => {
     const stats = await Tour.aggregate([
         {
