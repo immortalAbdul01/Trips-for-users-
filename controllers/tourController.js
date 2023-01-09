@@ -4,6 +4,7 @@ const Tour = require('./../Models/tourModel')
 const apiFeatures = require('./../utils/appFeature')
 const catchAsync = require('./../utils/catchAsync')
 const appError = require('./../utils/app.Error')
+const factory = require('./../controllers/handlerFacory')
 // const tours= JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`))
 
 
@@ -106,21 +107,7 @@ exports.updateTour = catchAsync(
 
 )
 
-exports.deleteTour = catchAsync(
-
-    async (req, res, next) => {
-
-        await Tour.findByIdAndDelete(req.params.id)
-
-
-        res.status(204).json({
-            mssg: "deleted sucessfully",
-            data: null
-        })
-    }
-
-)
-
+exports.deleteTour = factory.deleteOne(Tour)
 exports.getToursStats = catchAsync(async (req, res, next) => {
     const stats = await Tour.aggregate([
         {
