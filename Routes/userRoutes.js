@@ -4,17 +4,24 @@ const authController = require('./../controllers/authController')
 const express = require('express')
 
 const router = express.Router()
-router.route('/').get(authController.protect,authController.restrict('admin'),userController.getAllUsers)
-router.route('/me').get(authController.protect, userController.getMe, userController.getUser)
-router.route('/:id').get(authController.protect, userController.getUser)
-// .post(userController.addUser)
-// router.route('/:id').get(userController.getUser).patch(userController.updateUser).delete(userController.deleteUser)
 router.route('/signUp').post(authController.signUp)
-router.route('/login').post(authController.login)
-router.post('/forgotPassword', authController.forgotPassword)
 router.patch('/resetPassword/:token', authController.resetPassword)
+router.route('/login').post(authController.login)
+
+// this is a protecting middle ware 
+router.use(authController.protect)
+
+router.post('/forgotPassword', authController.forgotPassword)
+router.route('/me').get(authController.protect, userController.getMe, userController.getUser)
+
 router.patch('/updatePassword', authController.updatePassword)
-router.patch('/updateMe', authController.protect, userController.updateMe)
-router.patch('/:id', authController.protect, authController.restrict('admin'), userController.updateUser)
-router.delete('/deleteMe', authController.protect, userController.deleteMe)
+router.patch('/updateMe', userController.updateMe)
+router.delete('/deleteMe', userController.deleteMe)
+
+// this is a protecting and restricting middle ware 
+router.use(authController.restrict('admin'))
+
+router.route('/').get(userController.getAllUsers)
+router.patch('/:id', authController.restrict('admin'), userController.updateUser)
+router.route('/:id').get(userController.getUser)
 module.exports = router
