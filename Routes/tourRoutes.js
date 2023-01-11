@@ -16,6 +16,7 @@ router.route('/month/:year').get(authController.protect, authController.restrict
 //getting location route
 
 router.get('/tours-within/:distance/center/:latlng/unit/:unit', tourController.toursWithin)
+router.get('/distances/:latlng/unit/:unit', tourController.getDistance)
 router.route('/').get(tourController.getTours).post(authController.protect, authController.restrict('admin'), tourController.createTour)
 router.route('/:id').get(tourController.getTour).patch(authController.protect, authController.restrict('admin'), tourController.updateTour).delete(authController.protect, authController.restrict('admin', 'lead-guide'), tourController.deleteTour)
 

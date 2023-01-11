@@ -184,10 +184,10 @@ tourSchema.post(/^find/, function (doc, next) {
 tourSchema.index({ price: 1, ratingsAverage: -1 })
 tourSchema.index({ slug: 1 })
 // Aggregation middleware
-tourSchema.pre('aggregate', function (next) {
-    this.pipeline().unshift({ $match: { secretTour: { $ne: true } } })
-    console.log(this.pipeline());
-    next()
-})
+// tourSchema.pre('aggregate', function (next) {
+//     this.pipeline().unshift({ $match: { secretTour: { $ne: true } } })
+//     console.log(this.pipeline());
+//     next()
+// })
 const Trips = mongo.model('Trips', tourSchema)
 module.exports = Trips
