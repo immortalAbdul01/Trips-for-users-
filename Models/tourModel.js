@@ -38,7 +38,8 @@ const tourSchema = new mongo.Schema(
             type: Number,
             unique: false,
             min: [1, 'a rating must be atLeast 1'],
-            max: [5, 'your rating must be less than 5']
+            max: [5, 'your rating must be less than 5'],
+            set: val => Math.round(val * 10) / 10
 
 
         },
@@ -144,7 +145,9 @@ tourSchema.post('save', function (doc, next) {
     console.log(doc);
     next()
 })
+// indexing the start location
 
+tourSchema.index({ startLocation: '2dsphere' })
 // query middleware
 tourSchema.pre(/^find/, function (next) {
     this.find({ secretTour: { $ne: true } })

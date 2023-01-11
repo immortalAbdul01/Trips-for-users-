@@ -64,6 +64,23 @@ exports.getToursStats = catchAsync(async (req, res, next) => {
     })
 }
 )
+
+exports.toursWithin = catchAsync(async (req, res, next) => {
+    const { distance, latlng, unit } = req.params
+    const [lat, lng] = latlng.split(',')
+    const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1
+    if (!lat || !lng) {
+        next(new appError('oops you havent defined the lattitude or longtitude', 400))
+    }
+    const tours = await Tour.find({ startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } } })
+    res.status(200).json({
+        status: 'sucess',
+        results: tours.length,
+
+        tours
+    })
+}
+)
 exports.getMonthlyPlan = catchAsync(async (req, res) => {
     const year = req.params.year * 1
     const plan = await Tour.aggregate([
