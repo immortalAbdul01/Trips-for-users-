@@ -84,6 +84,16 @@ app.get('/', (req, res) => {
         user: 'Abdul Khan'
     })
 })
+app.get('/overview', (req, res) => {
+    res.status(200).render('overview', {
+        title: 'All tours'
+    })
+})
+app.get('/tour', (req, res) => {
+    res.status(200).render('tour', {
+        title: 'The forest hiker'
+    })
+})
 app.use('/app/v1/tours', tourRouter)
 app.use('/app/v1/users', userRouter)
 app.use('/app/v1/review', reviewRouter)
