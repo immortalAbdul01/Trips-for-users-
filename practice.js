@@ -13,6 +13,7 @@ const userRouter = require('./Routes/userRoutes')
 const appError = require('./utils/app.Error')
 const cookie_parser = require('cookie-parser')
 const errorController = require('./controllers/errorController')
+const viewRoute = require('./Routes/viewRoutes')
 
 const app = express()
 app.use(helmet())
@@ -78,22 +79,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 // one more method to or the easiest method to execute these stuffs 
 
-app.get('/', (req, res) => {
-    res.status(200).render('base', {
-        tour: 'This is the greatest tour in the world',
-        user: 'Abdul Khan'
-    })
-})
-app.get('/overview', (req, res) => {
-    res.status(200).render('overview', {
-        title: 'All tours'
-    })
-})
-app.get('/tour', (req, res) => {
-    res.status(200).render('tour', {
-        title: 'The forest hiker'
-    })
-})
+
+app.use('/', viewRoute)
 app.use('/app/v1/tours', tourRouter)
 app.use('/app/v1/users', userRouter)
 app.use('/app/v1/review', reviewRouter)
