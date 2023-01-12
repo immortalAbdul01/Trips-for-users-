@@ -33,6 +33,7 @@
     "morgan": "^1.10.0",
     "nodemailer": "^6.8.0",
     "prettier": "^2.8.1",
+    "pug": "^3.0.2",
     "rate-limit": "^0.1.1",
     "slugify": "^1.6.5",
     "validator": "^13.7.0",

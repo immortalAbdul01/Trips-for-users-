@@ -8,6 +8,7 @@ const hpp = require('hpp')
 const mongoSanitize = require('express-mongo-sanitize')
 const xss_clean = require('xss-clean')
 const tourRouter = require('./Routes/tourRoutes')
+const path = require('path')
 const userRouter = require('./Routes/userRoutes')
 const appError = require('./utils/app.Error')
 const cookie_parser = require('cookie-parser')
@@ -34,7 +35,6 @@ app.use((req, res, next) => {
     next()
 })
 app.use(cookie_parser());
-app.use(express.static('./public'))
 
 
 app.use((req, res, next) => {
@@ -50,6 +50,11 @@ const limiter = rateLimit({
     message: 'too many request please try again later'
 })
 app.use('/app', limiter)
+
+
+app.set('view engine', 'pug')
+app.set('views', path.join(__dirname, 'views'))
+app.use(express.static(path.join(__dirname, 'public')))
 
 // app.get('/app/v1/tours',getTours)
 
@@ -73,7 +78,12 @@ app.use('/app', limiter)
 
 // one more method to or the easiest method to execute these stuffs 
 
-
+app.get('/', (req, res) => {
+    res.status(200).render('base', {
+        tour: 'This is the greatest tour in the world',
+        user: 'Abdul Khan'
+    })
+})
 app.use('/app/v1/tours', tourRouter)
 app.use('/app/v1/users', userRouter)
 app.use('/app/v1/review', reviewRouter)
