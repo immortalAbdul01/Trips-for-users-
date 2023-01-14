@@ -141,10 +141,10 @@ tourSchema.pre('save', function (next) {
     next()
 })
 
-tourSchema.post('save', function (doc, next) {
-    console.log(doc);
-    next()
-})
+// tourSchema.post('save', function (doc, next) {
+//     console.log(doc);
+//     next()
+// })
 // indexing the start location
 
 tourSchema.index({ startLocation: '2dsphere' })
