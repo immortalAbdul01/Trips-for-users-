@@ -1,8 +1,10 @@
-const express = require('express');
-const viewsController = require('../controllers/viewsController');
-const authController = require('../controllers/authController');
+const express = require('express')
+const router = express.Router()
+const viewController = require('./../controllers/viewController')
 
-const router = express.Router();
+router.get('/', viewController.getOverview)
+router.get('/tour/:slug', viewController.getTour)
+
 
 router.get('/', viewsController.getOverview);
 router.get('/tour/:slug', authController.isLoggedIn, viewsController.getTour);
@@ -16,3 +18,5 @@ router.post(
 );
 
 module.exports = router;
+
+module.exports = router
