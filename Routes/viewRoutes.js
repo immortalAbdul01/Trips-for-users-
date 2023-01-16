@@ -5,6 +5,7 @@ const viewController = require('./../controllers/viewController')
 router.get('/', viewController.getOverview)
 router.get('/tour/:slug', viewController.getTour)
 
+<<<<<<< HEAD
 
 router.get('/', viewsController.getOverview);
 router.get('/tour/:slug', authController.isLoggedIn, viewsController.getTour);
@@ -20,3 +21,6 @@ router.post(
 module.exports = router;
 
 module.exports = router
+=======
+module.exports = router
+>>>>>>> parent of 5c52af9 (changed everything)
