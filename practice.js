@@ -18,11 +18,19 @@ const viewRouter = require('./routes/viewRoutes');
 const app = express();
 
 app.set('view engine', 'pug');
+app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
+// app.use(express.static(path.join(__dirname, 'public')));
 
+// Set 'views' directory for any views 
+// being rendered res.render()
+// app.set('views', path.join(__dirname, 'views'));
+
+// Set view engine as EJS
+// app.engine('html', require('ejs').renderFile);
+// app.set('view engine', 'html');
 // 1) GLOBAL MIDDLEWARES
 // Serving static files
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Set security HTTP headers
 app.use(helmet());
